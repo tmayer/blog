@@ -9,3 +9,21 @@
 
 // If you want to turn off dark background for syntax highlighting, comment or delete the below line.
 @import "minima/fastpages-dracula-highlight"; 
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap');
+
+.site-header {
+    background-color: black;
+}
+
+.site-header .page-link {
+    color: lightgray;
+    text-decoration: none;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.site-header .site-title {
+    color: lightgray;
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 14pt;
+    font-weight: bold;
+}
