@@ -3,17 +3,20 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Thomas MAYER | Blogging about NLP, Data Science, Visualization and more.</title>
+<title>Cartogram of the World’s Languages | Thomas MAYER</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Thomas MAYER" />
+<meta property="og:title" content="Cartogram of the World’s Languages" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Blogging about NLP, Data Science, Visualization and more." />
-<meta property="og:description" content="Blogging about NLP, Data Science, Visualization and more." />
-<link rel="canonical" href="https://tmayer.github.io/blog/" />
-<meta property="og:url" content="https://tmayer.github.io/blog/" />
+<meta name="description" content="Scaling the size of each country by the number of languages" />
+<meta property="og:description" content="Scaling the size of each country by the number of languages" />
+<link rel="canonical" href="https://tmayer.github.io/blog/visualization/d3js/typology/2013/11/13/cartogram-languages-world.html" />
+<meta property="og:url" content="https://tmayer.github.io/blog/visualization/d3js/typology/2013/11/13/cartogram-languages-world.html" />
 <meta property="og:site_name" content="Thomas MAYER" />
+<meta property="og:image" content="https://tmayer.github.io/blog/images/cartogram.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2013-11-13T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"Blogging about NLP, Data Science, Visualization and more.","@type":"WebSite","url":"https://tmayer.github.io/blog/","name":"Thomas MAYER","headline":"Thomas MAYER","@context":"https://schema.org"}</script>
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://tmayer.github.io/blog/visualization/d3js/typology/2013/11/13/cartogram-languages-world.html"},"description":"Scaling the size of each country by the number of languages","@type":"BlogPosting","url":"https://tmayer.github.io/blog/visualization/d3js/typology/2013/11/13/cartogram-languages-world.html","headline":"Cartogram of the World’s Languages","dateModified":"2013-11-13T00:00:00-06:00","datePublished":"2013-11-13T00:00:00-06:00","image":"https://tmayer.github.io/blog/images/cartogram.jpg","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://tmayer.github.io/blog/feed.xml" title="Thomas MAYER" /><!-- the google_analytics_id gets auto inserted from the config file -->
 
@@ -22,17 +25,20 @@
 <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-165309645-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
 
 <link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Thomas MAYER | Blogging about NLP, Data Science, Visualization and more.</title>
+<title>Cartogram of the World’s Languages | Thomas MAYER</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Thomas MAYER" />
+<meta property="og:title" content="Cartogram of the World’s Languages" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Blogging about NLP, Data Science, Visualization and more." />
-<meta property="og:description" content="Blogging about NLP, Data Science, Visualization and more." />
-<link rel="canonical" href="https://tmayer.github.io/blog/" />
-<meta property="og:url" content="https://tmayer.github.io/blog/" />
+<meta name="description" content="Scaling the size of each country by the number of languages" />
+<meta property="og:description" content="Scaling the size of each country by the number of languages" />
+<link rel="canonical" href="https://tmayer.github.io/blog/visualization/d3js/typology/2013/11/13/cartogram-languages-world.html" />
+<meta property="og:url" content="https://tmayer.github.io/blog/visualization/d3js/typology/2013/11/13/cartogram-languages-world.html" />
 <meta property="og:site_name" content="Thomas MAYER" />
+<meta property="og:image" content="https://tmayer.github.io/blog/images/cartogram.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2013-11-13T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"Blogging about NLP, Data Science, Visualization and more.","@type":"WebSite","url":"https://tmayer.github.io/blog/","name":"Thomas MAYER","headline":"Thomas MAYER","@context":"https://schema.org"}</script>
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://tmayer.github.io/blog/visualization/d3js/typology/2013/11/13/cartogram-languages-world.html"},"description":"Scaling the size of each country by the number of languages","@type":"BlogPosting","url":"https://tmayer.github.io/blog/visualization/d3js/typology/2013/11/13/cartogram-languages-world.html","headline":"Cartogram of the World’s Languages","dateModified":"2013-11-13T00:00:00-06:00","datePublished":"2013-11-13T00:00:00-06:00","image":"https://tmayer.github.io/blog/images/cartogram.jpg","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -123,34 +129,60 @@ window.onload = wrap_img;
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home"><h1 id="blog-posts">Blog Posts</h1>
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Cartogram of the World&#39;s Languages</h1><p class="page-description">Scaling the size of each country by the number of languages</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2013-11-13T00:00:00-06:00" itemprop="datePublished">
+        Nov 13, 2013
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      1 min read
+    
+</span></p>
 
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#visualization">visualization</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#d3js">d3js</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#typology">typology</a>
+        
+      
+      </p>
+    
 
-  
+    </header>
 
-  <!-- Hide posts if front matter flag hide:true -->
-  
-  
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><img src="/blog/images/cartogram.jpg" alt="" title="Cartogram screenshot" /></p>
 
-  <ul class="post-list"><li><h3>
-    <a class="post-link" href="/blog/deeplearning/2020/05/02/softmax-explained.html">
-    Softmax Explained
-    </a>
-</h3><p class="post-meta-description">Understanding the standard activation function for classification.</p><p class="post-meta">May 2, 2020</p>
-</li><li><h3>
-    <a class="post-link" href="/blog/visualization/d3js/typology/2014/03/13/phonmatrix.html">
-    PhonMatrix
-    </a>
-</h3><p class="post-meta-description">Visualizing phonological patterns such as vowel harmony and similar place avoidance from language data</p><p class="post-meta">Mar 13, 2014</p>
-</li><li><h3>
-    <a class="post-link" href="/blog/visualization/d3js/typology/2013/11/13/cartogram-languages-world.html">
-    Cartogram of the World&#39;s Languages
-    </a>
-</h3><p class="post-meta-description">Scaling the size of each country by the number of languages</p><p class="post-meta">Nov 13, 2013</p>
-</li></ul>
+<p>The interactive cartogram can be accessed <a href="http://th-mayer.de/cartogram" target="_blank">here</a>.</p>
 
-    </div>
+<p>The size of each country is scaled by
+the number of languages that are spoken in its territory. 
+Each language in the sample is only attributed to one country.
+The sample contains <a href="http://th-mayer.de/data/nrlangs_dahl.txt">7,293
+languages</a>. Each language is plotted with a small blue dot on the map if the
+“Show language locations” option is selected. If you mouse over the (distorted) world map,
+you see the number of languages for the respective countries. The cartogram of the world’s languages is adapted from
+<a href="http://prag.ma/code/d3-cartogram/">the cartogram example by Shawn Allen</a>.</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="tmayer/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/visualization/d3js/typology/2013/11/13/cartogram-languages-world.html" hidden></a>
+</article>
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/blog/"></data>
