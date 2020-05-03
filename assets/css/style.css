@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap");
 .highlight .c { color: #998; font-style: italic; }
 
 .highlight .err { color: #a61717; background-color: #e3d2d2; }
@@ -482,5 +483,11 @@ table td { text-overflow: ellipsis; overflow: hidden; max-width: 15em; }
 .highlight .m, .highlight .mb, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .mo, .highlight .il { color: #bd93f9; }
 
 .highlight .gd { color: #ff5555; }
+
+.site-header { background-color: black; }
+
+.site-header .page-link { color: lightgray; text-decoration: none; font-family: 'Titillium Web', sans-serif; }
+
+.site-header .site-title { color: lightgray; font-family: 'Titillium Web', sans-serif; font-size: 14pt; font-weight: bold; }
 
 /*# sourceMappingURL=style.css.map */
