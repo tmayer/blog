@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>User and Item Based Filtering | Thomas MAYER</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="User and Item Based Filtering" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Two different ways to do collaborative filtering" />
+<meta property="og:description" content="Two different ways to do collaborative filtering" />
+<link rel="canonical" href="https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html" />
+<meta property="og:url" content="https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html" />
+<meta property="og:site_name" content="Thomas MAYER" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-21T00:00:00-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html"},"description":"Two different ways to do collaborative filtering","@type":"BlogPosting","url":"https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html","headline":"User and Item Based Filtering","dateModified":"2020-06-21T00:00:00-05:00","datePublished":"2020-06-21T00:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://tmayer.github.io/blog/feed.xml" title="Thomas MAYER" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-165309645-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>User and Item Based Filtering | Thomas MAYER</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="User and Item Based Filtering" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Two different ways to do collaborative filtering" />
+<meta property="og:description" content="Two different ways to do collaborative filtering" />
+<link rel="canonical" href="https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html" />
+<meta property="og:url" content="https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html" />
+<meta property="og:site_name" content="Thomas MAYER" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-21T00:00:00-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html"},"description":"Two different ways to do collaborative filtering","@type":"BlogPosting","url":"https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html","headline":"User and Item Based Filtering","dateModified":"2020-06-21T00:00:00-05:00","datePublished":"2020-06-21T00:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://tmayer.github.io/blog/feed.xml" title="Thomas MAYER" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-165309645-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript">
+require.config({
+  paths: {
+    jquery: 'https://code.jquery.com/jquery-3.5.0.min',
+    plotly: 'https://cdn.plot.ly/plotly-latest.min'
+  },
+
+  shim: {
+    plotly: {
+      deps: ['jquery'],
+      exports: 'plotly'
+    }
+  }
+});
+</script>
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Thomas MAYER</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">User and Item Based Filtering</h1><p class="page-description">Two different ways to do collaborative filtering</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-06-21T00:00:00-05:00" itemprop="datePublished">
+        Jun 21, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      14 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#machinelearning">machinelearning</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/tmayer/blog/tree/master/_notebooks/2020-06-21-user-item-based-filtering.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/tmayer/blog/blob/master/_notebooks/2020-06-21-user-item-based-filtering.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#table-of-contents">Table of Contents</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#Data">Data </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#User-based-Filtering">User-based Filtering </a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#Step-1:-Identify-similar-users">Step 1: Identify similar users </a></li>
+<li class="toc-entry toc-h2"><a href="#Ranking-the-critics">Ranking the critics </a></li>
+<li class="toc-entry toc-h2"><a href="#Step-2:-Recommending-Items">Step 2: Recommending Items </a></li>
+<li class="toc-entry toc-h2"><a href="#Item-based-Filtering">Item-based Filtering </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#User-or-Item-based-Filtering?">User or Item-based Filtering? </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-06-21-user-item-based-filtering.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p></p>
+<h1>
+<a class="anchor" href="#table-of-contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Table of Contents<span class="tocSkip"></span>
+</h1>
+<div class="toc" style="margin-top: 1em;"><ul class="toc-item">
+<li>
+<span><a href="#User-and-Item-Based-Filtering" data-toc-modified-id="User-and-Item-Based-Filtering-1"><span class="toc-item-num">1  </span>User and Item Based Filtering</a></span><ul class="toc-item"><li><span><a href="#Data" data-toc-modified-id="Data-1.1"><span class="toc-item-num">1.1  </span>Data</a></span></li></ul>
+</li>
+<li>
+<span><a href="#User-based-Filtering" data-toc-modified-id="User-based-Filtering-2"><span class="toc-item-num">2  </span>User-based Filtering</a></span><ul class="toc-item">
+<li><span><a href="#Step-1:-Identify-similar-users" data-toc-modified-id="Step-1:-Identify-similar-users-2.1"><span class="toc-item-num">2.1  </span>Step 1: Identify similar users</a></span></li>
+<li><span><a href="#Ranking-the-critics" data-toc-modified-id="Ranking-the-critics-2.2"><span class="toc-item-num">2.2  </span>Ranking the critics</a></span></li>
+<li><span><a href="#Step-2:-Recommending-Items" data-toc-modified-id="Step-2:-Recommending-Items-2.3"><span class="toc-item-num">2.3  </span>Step 2: Recommending Items</a></span></li>
+<li><span><a href="#Item-based-Filtering" data-toc-modified-id="Item-based-Filtering-2.4"><span class="toc-item-num">2.4  </span>Item-based Filtering</a></span></li>
+</ul>
+</li>
+<li><span><a href="#User-or-Item-based-Filtering?" data-toc-modified-id="User-or-Item-based-Filtering?-3"><span class="toc-item-num">3  </span>User or Item-based Filtering?</a></span></li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Collaborative Filtering is a method in recommendation systems that searches for similar objects in order to create a ranked list of suggestions. In general, we distinguish between two different approaches:</p>
+<ul>
+<li>User-based filtering: we first identify the most similar users to the one for whom we want to give recommendations.</li>
+<li>Item-based filtering: we first search for the most similar items to the ones that are most relevant to the user (e.g., most liked by the user)</li>
+</ul>
+<p>We will look at both approaches and discuss their advantages. This blog post is very much inspired by Chapter 2 of Toby Segaran's classic book "Programming Collective Intelligence" (O'Reilly, 2007).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Data">
+<a class="anchor" href="#Data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data<a class="anchor-link" href="#Data"> </a>
+</h2>
+<p>For our discussion we need some recommendation data. There are several ways of expressing a user's preference, such as binary distinctions (booked a hotel vs. didn't book the hotel) or more explicit feedback in the form of graded reviews.</p>
+<p>We take the exemplary data below (taken from Segaran's book) and compute the recommendations using the Pandas library.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">critics</span><span class="o">=</span><span class="p">{</span><span class="s1">'Lisa Rose'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'Lady in the Water'</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">'Snakes on a Plane'</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">,</span>
+      <span class="s1">'Just My Luck'</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">'Superman Returns'</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">,</span> <span class="s1">'You, Me and Dupree'</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
+      <span class="s1">'The Night Listener'</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">},</span>
+     <span class="s1">'Gene Seymour'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'Lady in the Water'</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">'Snakes on a Plane'</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">,</span>
+      <span class="s1">'Just My Luck'</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span> <span class="s1">'Superman Returns'</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span> <span class="s1">'The Night Listener'</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span>
+      <span class="s1">'You, Me and Dupree'</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">},</span>
+     <span class="s1">'Michael Phillips'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'Lady in the Water'</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">'Snakes on a Plane'</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span>
+      <span class="s1">'Superman Returns'</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">,</span> <span class="s1">'The Night Listener'</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">},</span>
+     <span class="s1">'Claudia Puig'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'Snakes on a Plane'</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">,</span> <span class="s1">'Just My Luck'</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span>
+      <span class="s1">'The Night Listener'</span><span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span> <span class="s1">'Superman Returns'</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span>
+      <span class="s1">'You, Me and Dupree'</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">},</span>
+     <span class="s1">'Mick LaSalle'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'Lady in the Water'</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">'Snakes on a Plane'</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span>
+      <span class="s1">'Just My Luck'</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">'Superman Returns'</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">'The Night Listener'</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span>
+      <span class="s1">'You, Me and Dupree'</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">},</span>
+     <span class="s1">'Jack Matthews'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'Lady in the Water'</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">'Snakes on a Plane'</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span>
+      <span class="s1">'The Night Listener'</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">'Superman Returns'</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span> <span class="s1">'You, Me and Dupree'</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">},</span>
+     <span class="s1">'Toby'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'Snakes on a Plane'</span><span class="p">:</span><span class="mf">4.5</span><span class="p">,</span><span class="s1">'You, Me and Dupree'</span><span class="p">:</span><span class="mf">1.0</span><span class="p">,</span><span class="s1">'Superman Returns'</span><span class="p">:</span><span class="mf">4.0</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">critics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">critics</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">critics</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Lady in the Water</th>
+      <th>Snakes on a Plane</th>
+      <th>Just My Luck</th>
+      <th>Superman Returns</th>
+      <th>You, Me and Dupree</th>
+      <th>The Night Listener</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Lisa Rose</th>
+      <td>2.5</td>
+      <td>3.5</td>
+      <td>3.0</td>
+      <td>3.5</td>
+      <td>2.5</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>Gene Seymour</th>
+      <td>3.0</td>
+      <td>3.5</td>
+      <td>1.5</td>
+      <td>5.0</td>
+      <td>3.5</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>Michael Phillips</th>
+      <td>2.5</td>
+      <td>3.0</td>
+      <td>NaN</td>
+      <td>3.5</td>
+      <td>NaN</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>Claudia Puig</th>
+      <td>NaN</td>
+      <td>3.5</td>
+      <td>3.0</td>
+      <td>4.0</td>
+      <td>2.5</td>
+      <td>4.5</td>
+    </tr>
+    <tr>
+      <th>Mick LaSalle</th>
+      <td>3.0</td>
+      <td>4.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>Jack Matthews</th>
+      <td>3.0</td>
+      <td>4.0</td>
+      <td>NaN</td>
+      <td>5.0</td>
+      <td>3.5</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>Toby</th>
+      <td>NaN</td>
+      <td>4.5</td>
+      <td>NaN</td>
+      <td>4.0</td>
+      <td>1.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The data frame shows our toy data set as an input for recommendations. Usually, the matrix is much bigger and way more sparse. Yet, it illustrates the fact that some users (such as Toby) haven't rated (and thus might not have seen) all the movies. We would like to get a ranking of the missing movies so that we can recommend the movie which most likely fits to their preferences.</p>
+<p>In the collaborative filtering approach (be it user or item based), there are the two main steps to get to this ranking (here illustrated with the user-based approach for our movie toy data set):</p>
+<ol>
+<li>Define a similarity between objects (either users or items). This step is different from user and item based recommenders and gives them their respective names. In the user-based approach, the similarity is defined in terms of how the users rated the movies. If users give the same or a very similar rating to the same movie, they are considered more similar than if they give very different ratings. We will see below how we can quantify this to arrive at a similarity matrix between users.</li>
+<li>The second step takes the previously defined similarity metric and uses it to compute a weighted average to obtain the final recommendation scores. Once we identified a similarity among users, we will check all the missing movies and weigh the ratings that the other users gave depending on their similarity to the user at hand. </li>
+</ol>
+<h1 id="User-based-Filtering">
+<a class="anchor" href="#User-based-Filtering" aria-hidden="true"><span class="octicon octicon-link"></span></a>User-based Filtering<a class="anchor-link" href="#User-based-Filtering"> </a>
+</h1>
+<p>Now we want to go through the different steps for user-based filtering and compute the similarities and rankings.</p>
+<h2 id="Step-1:-Identify-similar-users">
+<a class="anchor" href="#Step-1:-Identify-similar-users" aria-hidden="true"><span class="octicon octicon-link"></span></a>Step 1: Identify similar users<a class="anchor-link" href="#Step-1:-Identify-similar-users"> </a>
+</h2>
+<p>There are multiple ways to define the similarity among users based on the ratings they gave to the movies. However, there is one particular method that a) is easy to compute with Pandas data frames and b) works particularly well when the ratings are not normalized: the <strong>Pearson correlation</strong> coefficient.</p>
+<p>Pearson correlation has values between -1 and +1, where a negative value indicates that the ratings from two users tend to correlate negatively whereas a positive value implies positive correlation. Negative correlation means that a very high rating from the first user would imply a rather low rating from the other while a positive correlation means that both users's ratings are similar in their magnitude.</p>
+<p>In Pandas, there is a very convenient way to get the Pearson correlation coefficients for a data frame by using the <code>corr()</code> method. You just have to decide for which items in our data frame the correlation should be computed, for the users or the movies. In our case, we're interested in the users, that's why we have to transpose the data frame first (by using the <code>.T</code> shortcut, i.e., <code>critics.T</code>) before applying the correlation method.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">critics</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'pearson'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Lisa Rose</th>
+      <th>Gene Seymour</th>
+      <th>Michael Phillips</th>
+      <th>Claudia Puig</th>
+      <th>Mick LaSalle</th>
+      <th>Jack Matthews</th>
+      <th>Toby</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Lisa Rose</th>
+      <td>1.000000</td>
+      <td>0.396059</td>
+      <td>0.404520</td>
+      <td>0.566947</td>
+      <td>0.594089</td>
+      <td>0.747018</td>
+      <td>0.991241</td>
+    </tr>
+    <tr>
+      <th>Gene Seymour</th>
+      <td>0.396059</td>
+      <td>1.000000</td>
+      <td>0.204598</td>
+      <td>0.314970</td>
+      <td>0.411765</td>
+      <td>0.963796</td>
+      <td>0.381246</td>
+    </tr>
+    <tr>
+      <th>Michael Phillips</th>
+      <td>0.404520</td>
+      <td>0.204598</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>-0.258199</td>
+      <td>0.134840</td>
+      <td>-1.000000</td>
+    </tr>
+    <tr>
+      <th>Claudia Puig</th>
+      <td>0.566947</td>
+      <td>0.314970</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.566947</td>
+      <td>0.028571</td>
+      <td>0.893405</td>
+    </tr>
+    <tr>
+      <th>Mick LaSalle</th>
+      <td>0.594089</td>
+      <td>0.411765</td>
+      <td>-0.258199</td>
+      <td>0.566947</td>
+      <td>1.000000</td>
+      <td>0.211289</td>
+      <td>0.924473</td>
+    </tr>
+    <tr>
+      <th>Jack Matthews</th>
+      <td>0.747018</td>
+      <td>0.963796</td>
+      <td>0.134840</td>
+      <td>0.028571</td>
+      <td>0.211289</td>
+      <td>1.000000</td>
+      <td>0.662849</td>
+    </tr>
+    <tr>
+      <th>Toby</th>
+      <td>0.991241</td>
+      <td>0.381246</td>
+      <td>-1.000000</td>
+      <td>0.893405</td>
+      <td>0.924473</td>
+      <td>0.662849</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As can be seen in the correlation matrix, some users are more similar to each other than others. For example, users Toby and Michael Phillips show completely opposite behavior, indicated by a Pearson coefficient of -1. This is because they only share ratings for two movies ('Snakes on a Plane' and 'Superman Returns') and those ratings are completely negatively correlated. Compared to their respective average values (3.25 for Michael Phillips and 4.25 for Toby), they gave opposite directions for these two movies. While Phillips gave a lower rating for 'Snakes' (3.0), Toby gave a higher value (4.5) and vice versa for 'Superman Returns' (4.0 in Toby's case and 3.5 in Phillips').</p>
+<p>On the other hand, Toby and Lisa Rose's ratings are very similar to each other, showing a Pearson value of 0.99.</p>
+<p>Users always have a Pearson correlation coefficient of 1 to themselves because, obviously, their ratings show a perfect correlation. The matrix is also symmetrical as the correlation is not dependent on order.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">euclidean</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+  <span class="n">eucl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+  <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">eucl</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">critics</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">euclidean</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Lisa Rose</th>
+      <th>Gene Seymour</th>
+      <th>Michael Phillips</th>
+      <th>Claudia Puig</th>
+      <th>Mick LaSalle</th>
+      <th>Jack Matthews</th>
+      <th>Toby</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Lisa Rose</th>
+      <td>1.000000</td>
+      <td>0.148148</td>
+      <td>0.444444</td>
+      <td>0.285714</td>
+      <td>0.333333</td>
+      <td>0.210526</td>
+      <td>0.222222</td>
+    </tr>
+    <tr>
+      <th>Gene Seymour</th>
+      <td>0.148148</td>
+      <td>1.000000</td>
+      <td>0.210526</td>
+      <td>0.133333</td>
+      <td>0.129032</td>
+      <td>0.800000</td>
+      <td>0.108108</td>
+    </tr>
+    <tr>
+      <th>Michael Phillips</th>
+      <td>0.444444</td>
+      <td>0.210526</td>
+      <td>1.000000</td>
+      <td>0.571429</td>
+      <td>0.285714</td>
+      <td>0.181818</td>
+      <td>0.285714</td>
+    </tr>
+    <tr>
+      <th>Claudia Puig</th>
+      <td>0.285714</td>
+      <td>0.133333</td>
+      <td>0.571429</td>
+      <td>1.000000</td>
+      <td>0.173913</td>
+      <td>0.181818</td>
+      <td>0.235294</td>
+    </tr>
+    <tr>
+      <th>Mick LaSalle</th>
+      <td>0.333333</td>
+      <td>0.129032</td>
+      <td>0.285714</td>
+      <td>0.173913</td>
+      <td>1.000000</td>
+      <td>0.137931</td>
+      <td>0.307692</td>
+    </tr>
+    <tr>
+      <th>Jack Matthews</th>
+      <td>0.210526</td>
+      <td>0.800000</td>
+      <td>0.181818</td>
+      <td>0.181818</td>
+      <td>0.137931</td>
+      <td>1.000000</td>
+      <td>0.117647</td>
+    </tr>
+    <tr>
+      <th>Toby</th>
+      <td>0.222222</td>
+      <td>0.108108</td>
+      <td>0.285714</td>
+      <td>0.235294</td>
+      <td>0.307692</td>
+      <td>0.117647</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Ranking-the-critics">
+<a class="anchor" href="#Ranking-the-critics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ranking the critics<a class="anchor-link" href="#Ranking-the-critics"> </a>
+</h2>
+<p>With the Pearson correlation matrix we can compute a ranking of critics for each user. To this end, we define the function <code>top_matches</code> that makes use of the <code>corr()</code> method of data frames for the similary scores. To get a proper similarity ranking, we first identify all users other than the one under investigation and return a Pandas Series that is created by indexing the correlation matrix for the respective user. Finally, the series is sorted in reverse order to return the top similar users.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">top_matches</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="n">person</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'pearson'</span><span class="p">):</span>
+  <span class="n">other_people</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">critics</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">person</span><span class="p">]</span>
+  <span class="n">corr_persons</span> <span class="o">=</span> <span class="n">critics</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+  <span class="n">scores</span> <span class="o">=</span> <span class="n">corr_persons</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">other_people</span><span class="p">,</span> <span class="n">person</span><span class="p">]</span>
+  <span class="n">scores</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">scores</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As mentioned above, the most similar user to Toby is Lisa Rose, showing a correlation value of almost 1, whereas the least similar is Michael Phillips.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">top_matches</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="s1">'Toby'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Lisa Rose           0.991241
+Mick LaSalle        0.924473
+Claudia Puig        0.893405
+Jack Matthews       0.662849
+Gene Seymour        0.381246
+Michael Phillips   -1.000000
+Name: Toby, dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Step-2:-Recommending-Items">
+<a class="anchor" href="#Step-2:-Recommending-Items" aria-hidden="true"><span class="octicon octicon-link"></span></a>Step 2: Recommending Items<a class="anchor-link" href="#Step-2:-Recommending-Items"> </a>
+</h2>
+<p>Having defined the similarity of users, we can move to the second step: how to compute the actual recommendations for user Toby. For this, we first select those movies in our toy dataset that Toby hasn't ranked yet (assuming he hasn't watched them either). These missing movies are the basis for our recommendations. All we need to do now is rank them in the appropriate order so that the movie that we assume he would rate highest comes up first in our ranking.</p>
+<p>This begs the question how we make the predictions. The basic idea is pretty simple: we take the ratings from other users for the missing movies and compute the weighted average of the rankings for each movie. But where do we take the weights from? It's very easy. We take advantage of the similarities that we worked out above. Thus, the final score for each movie (for user Toby) is calculated by taking the sum of the rating times the similarity (to Toby) for each movie divided by the overall sum of the similarities.</p>
+<p>$ score_{movie} = \frac{\sum_{i=1}^{users} sim_{user_i, Toby} * rating_{user_i, movie}}{\sum_{i=1}^{users} sim_{user_i, Toby}}$</p>
+<p>In Pandas, we can use the <code>isnull()</code> method on the Series to identify all the missing movies for the user. Given the similarity rankings from our previously defined function <code>top_matches</code>, we remove those users whose correlation coefficient is negative. The rationale is that we only want to stick to users that rate positively correlated with Toby. We then index into the ratings data frame, extracting only those cells with similar users and missing films. For the actual computation of the scores we need two objects:</p>
+<ol>
+<li>the subset of the cells from the original data frame of ratings giving the similar users and the missing movies (<code>cores</code>)</li>
+<li>the filtered user similarities where all negatively correlated users to Toby have been discarded (<code>sims</code>)</li>
+</ol>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_recommendations</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="n">person</span><span class="p">):</span>
+  <span class="n">missing_films</span> <span class="o">=</span> <span class="n">critics</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">critics</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">person</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>
+  <span class="n">person_similarities</span> <span class="o">=</span> <span class="n">top_matches</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="n">person</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">critics</span><span class="p">))</span>
+  <span class="n">person_similarities</span> <span class="o">=</span> <span class="n">person_similarities</span><span class="p">[</span><span class="n">person_similarities</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+  <span class="n">movies_scores</span> <span class="o">=</span> <span class="n">critics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">person_similarities</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">missing_films</span><span class="p">]</span>
+  <span class="k">return</span> <span class="n">movies_scores</span><span class="p">,</span> <span class="n">person_similarities</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scores</span><span class="p">,</span> <span class="n">sims</span> <span class="o">=</span> <span class="n">get_recommendations</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="s1">'Toby'</span><span class="p">)</span>
+<span class="n">scores</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Lady in the Water</th>
+      <th>Just My Luck</th>
+      <th>The Night Listener</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Lisa Rose</th>
+      <td>2.5</td>
+      <td>3.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>Mick LaSalle</th>
+      <td>3.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>Claudia Puig</th>
+      <td>NaN</td>
+      <td>3.0</td>
+      <td>4.5</td>
+    </tr>
+    <tr>
+      <th>Jack Matthews</th>
+      <td>3.0</td>
+      <td>NaN</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>Gene Seymour</th>
+      <td>3.0</td>
+      <td>1.5</td>
+      <td>3.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sims</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Lisa Rose        0.991241
+Mick LaSalle     0.924473
+Claudia Puig     0.893405
+Jack Matthews    0.662849
+Gene Seymour     0.381246
+Name: Toby, dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With these two objects we can first compute the numerator of the final score by taking the ratings for the missing movies and multiply them by the respective user's similarity to Toby.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">films_overview</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">sims</span>
+<span class="n">films_overview</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Lisa Rose</th>
+      <th>Mick LaSalle</th>
+      <th>Claudia Puig</th>
+      <th>Jack Matthews</th>
+      <th>Gene Seymour</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Lady in the Water</th>
+      <td>2.478102</td>
+      <td>2.773420</td>
+      <td>NaN</td>
+      <td>1.988547</td>
+      <td>1.143739</td>
+    </tr>
+    <tr>
+      <th>Just My Luck</th>
+      <td>2.973722</td>
+      <td>1.848947</td>
+      <td>2.680215</td>
+      <td>NaN</td>
+      <td>0.571870</td>
+    </tr>
+    <tr>
+      <th>The Night Listener</th>
+      <td>2.973722</td>
+      <td>2.773420</td>
+      <td>4.020323</td>
+      <td>1.988547</td>
+      <td>1.143739</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After that, we can easily get the sum of these weighted scores for each movie.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">films_overview</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Lady in the Water      8.383808
+Just My Luck           8.074754
+The Night Listener    12.899752
+dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>All that is left now is to compute the denominator. For this, we take the non-null ratings as a mask for the similarities. The reason for this step is to remove individual similarities from the totals if the user didn't rate the respective movie. Pandas's weak typing comes in handy at this step. The boolean return values of the <code>notnull()</code> method are turned into integers (0 for <code>False</code>), which nullify the factor for the respective user. At the end, we obtain a similarity total for each movie.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">totals</span> <span class="o">=</span> <span class="p">(</span><span class="n">scores</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">sims</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">totals</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Lady in the Water     2.959810
+Just My Luck          3.190366
+The Night Listener    3.853215
+dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally, we can compute the actual predicted movie ratings for user Toby by taking the sums of the weighted scores and dividing them by the totals. In our toy example, the movie 'The Night Listener' gets the highest rating with 3.35 and would thus be our first choice for a recommendation to Toby.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">recs</span> <span class="o">=</span> <span class="n">films_overview</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">totals</span>
+<span class="n">recs</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Just My Luck          2.530981
+Lady in the Water     2.832550
+The Night Listener    3.347790
+dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Item-based-Filtering">
+<a class="anchor" href="#Item-based-Filtering" aria-hidden="true"><span class="octicon octicon-link"></span></a>Item-based Filtering<a class="anchor-link" href="#Item-based-Filtering"> </a>
+</h2>
+<p>So far, we've looked at the user similarities first to reduce the search space for our recommendations. However, this comes with a downside when your matrix of ratings includes a large number of users and shows a lot of sparsity, thus making it hard to compute similarities among users when there is little to no overlap.</p>
+<p>An alternative approach, called item-based filtering, tries to remedy these problems by dispensing with the user similarity step and searching for similar items right away (hence the name). With our toy dataframe this is very easy as we only need to apply the <code>corr()</code> method again, this time on the items and not on the users:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">critics</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">euclidean</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Lady in the Water</th>
+      <th>Snakes on a Plane</th>
+      <th>Just My Luck</th>
+      <th>Superman Returns</th>
+      <th>You, Me and Dupree</th>
+      <th>The Night Listener</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Lady in the Water</th>
+      <td>1.000000</td>
+      <td>0.222222</td>
+      <td>0.222222</td>
+      <td>0.090909</td>
+      <td>0.400000</td>
+      <td>0.285714</td>
+    </tr>
+    <tr>
+      <th>Snakes on a Plane</th>
+      <td>0.222222</td>
+      <td>1.000000</td>
+      <td>0.105263</td>
+      <td>0.166667</td>
+      <td>0.051282</td>
+      <td>0.181818</td>
+    </tr>
+    <tr>
+      <th>Just My Luck</th>
+      <td>0.222222</td>
+      <td>0.105263</td>
+      <td>1.000000</td>
+      <td>0.064516</td>
+      <td>0.181818</td>
+      <td>0.153846</td>
+    </tr>
+    <tr>
+      <th>Superman Returns</th>
+      <td>0.090909</td>
+      <td>0.166667</td>
+      <td>0.064516</td>
+      <td>1.000000</td>
+      <td>0.053333</td>
+      <td>0.102564</td>
+    </tr>
+    <tr>
+      <th>You, Me and Dupree</th>
+      <td>0.400000</td>
+      <td>0.051282</td>
+      <td>0.181818</td>
+      <td>0.053333</td>
+      <td>1.000000</td>
+      <td>0.148148</td>
+    </tr>
+    <tr>
+      <th>The Night Listener</th>
+      <td>0.285714</td>
+      <td>0.181818</td>
+      <td>0.153846</td>
+      <td>0.102564</td>
+      <td>0.148148</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Again, the same principles apply that we mentioned above for the user similarities. A score close to 1 indicates that the movies are very similar. For example, the movies 'Snakes on a Plane' and 'Lady in the Water' seem to be alike based on the users's ratings whereas 'Just my Luck' and 'Lady in the Water' are quite dissimilar.</p>
+<p>To compute the final recommendation scores all we need to do is to identify the missing movies of a given user (Toby) and compute a weighted average of their similarity to all movies the user has already rated together with their similarity to the missing movies.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_item_recommendations</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="n">person</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'pearson'</span><span class="p">):</span>
+  <span class="n">missing_films</span> <span class="o">=</span> <span class="n">critics</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">critics</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">person</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>
+  <span class="n">movie_similarities</span> <span class="o">=</span> <span class="n">critics</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+  <span class="n">movie_similarities</span> <span class="o">=</span> <span class="n">movie_similarities</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">movie_similarities</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">missing_films</span><span class="p">),</span> <span class="n">missing_films</span><span class="p">]</span>
+  <span class="n">person_ratings</span> <span class="o">=</span> <span class="n">critics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">person</span><span class="p">,</span> <span class="o">~</span><span class="n">critics</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">missing_films</span><span class="p">)]</span>
+  
+  <span class="k">return</span> <span class="n">movie_similarities</span><span class="p">,</span> <span class="n">person_ratings</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ms</span><span class="p">,</span> <span class="n">pr</span> <span class="o">=</span> <span class="n">get_item_recommendations</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="s1">'Toby'</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">euclidean</span><span class="p">)</span>
+<span class="n">ms</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Lady in the Water</th>
+      <th>Just My Luck</th>
+      <th>The Night Listener</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Snakes on a Plane</th>
+      <td>0.222222</td>
+      <td>0.105263</td>
+      <td>0.181818</td>
+    </tr>
+    <tr>
+      <th>Superman Returns</th>
+      <td>0.090909</td>
+      <td>0.064516</td>
+      <td>0.102564</td>
+    </tr>
+    <tr>
+      <th>You, Me and Dupree</th>
+      <td>0.400000</td>
+      <td>0.181818</td>
+      <td>0.148148</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pr</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Snakes on a Plane     4.5
+Superman Returns      4.0
+You, Me and Dupree    1.0
+Name: Toby, dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Like above, we now take the missing movies and weigh them with the similarities that we defined above. The result is an item-based recommendation score that indicates which movies we should recommend next to the user (in this case Toby).</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">ms</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">pr</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Lady in the Water     1.763636
+Just My Luck          0.913567
+The Night Listener    1.376586
+dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">item_recos</span> <span class="o">=</span> <span class="p">(</span><span class="n">ms</span><span class="o">.</span><span class="n">T</span><span class="o">*</span><span class="n">pr</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">ms</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">item_recos</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Lady in the Water     2.473088
+Just My Luck          2.598332
+The Night Listener    3.182635
+dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="User-or-Item-based-Filtering?">
+<a class="anchor" href="#User-or-Item-based-Filtering?" aria-hidden="true"><span class="octicon octicon-link"></span></a>User or Item-based Filtering?<a class="anchor-link" href="#User-or-Item-based-Filtering?"> </a>
+</h1>
+<p>As shown above, user and item-based filtering mainly differ in the first step: we either have to compute similarities for users or times first. With a very large database, item-based filtering is to be preferred as it is significantly faster to compare the items for users to identify the similarities than to compare a given user to all other users</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="tmayer/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/machinelearning/2020/06/21/user-item-based-filtering.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Blogging about NLP, Data Science, Visualization and more.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/tmayer" title="tmayer"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/mayerthommy" title="mayerthommy"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
