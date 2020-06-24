@@ -10,6 +10,10 @@ search_exclude: true
 categories: [visualization, d3js, typology]
 ---
 
+![]({{ site.baseurl }}/images/WALS-sunburst.png)
+
+Click <a href="http://th-mayer.de/wals/" target="_blank">here</a> to open the interactive visualization.
+
 The *WALS Sunburst Explorer* shows the values for all <a href="http://wals.info" target="_blank"><i class="fa fa-external-link"></i> WALS</a>
 features by combining the geolocation of the respective languages with their genealogy in
 a <a href="http://www.cc.gatech.edu/gvu/ii/sunburst/" target="_blank"><i class="fa fa-external-link"></i> sunburst visualization</a>
@@ -33,10 +37,18 @@ comparison”</a> at the <a href="http://www.uni-marburg.de" target="_blank">Phi
 
 # Bibliography
 
-Mayer, Thomas and Christian Rohrdantz. 2013. PhonMatrix: Visualizing co-occurrence constraints in sounds. In Proceedings of the ACL 2013 System Demonstration.
+Bostock, Michael, Vadim Ogievetsky and Jeffrey Heer. 2011. D3: Data-driven documents. <i>IEEE Transactions on Visualization &amp; Computer Graphics</i> (Proc. InfoVis), 17(12), 2301–2309.
 
-Mayer, Thomas, Christian Rohrdantz, Frans Plank, Peter Bak, Miriam Butt, Daniel A. Keim. 2010. Consonant co-occurrence in stems across languages: Automatic analysis and visualization of a phonotactic constraint. In Proceedings of the ACL 2010 Workshop on NLP and Linguistics: Finding the Common Ground (NLPLING 2010), 70–78.
+Dryer, Matthew S. 1992. The Greenbergian word order correlations. <i>Language</i>, 68(1), 81-138.
 
-Mayer, Thomas, Christian Rohrdantz, Miriam Butt, Frans Plank and Daniel A. Keim. 2010. Visualizing Vowel Harmony. Journal of Linguistic Issues in Language Technology (LiLT), Vol. 4 Issue 2, 1–33.
+Dryer, Matthew S. and Martin Haspelmath (eds.). 2013. The World Atlas of Language Structures Online. Leipzig: Max Planck Institute for Evolutionary Anthropology. (Available online at <a href="http://wals.info/"><i class="fa fa-external-link"></i> http://wals.info/</a>, Accessed on 2014-08-13.)
 
-Rohrdantz, Christian, Thomas Mayer, Miriam Butt, Frans Plank and Daniel A. Keim. 2010. Comparative visual analysis of cross-linguistic features. In Proceedings of the International Symposium on Visual Analytics Science and Technology (EuroVAST 2010), 27–32.
+Mayer, Thomas, Bernhard Wälchli, Christian Rohrdantz and Michael Hund. 2014. From the extraction of continuous features in parallel texts to visual analytics of heterogeneous areal-typological datasets. In Nolan, Brian and Carlos Pascual-Periñán (eds.),&nbsp;<em>Language processing and grammars: The role of functionally oriented computational models</em> (SLCS) (Serie: Studies in Language). Amsterdam: John Benjamins, 13-38.
+
+Rohrdantz, Christian, Michael Hund, Thomas Mayer, Bernhard Wälchli and Daniel A. Keim. 2012.
+The World’s Languages Explorer: Visual analysis of language features in genealogical and areal
+contexts. In <i>Computer Graphic Forum</i>, 31(3), 935–944.
+[<a href="http://onlinelibrary.wiley.com/doi/10.1111/j.1467-8659.2012.03086.x/abstract" target="_blank"><i class="fa fa-external-link"></i> link</a>]
+
+Stasko, John and Eugene Zhang. 2000. Focus+context display and navigation techniques for
+enhancing radial, space-filling hierarchy visualizations. In <i>Proceedings of the IEEE Symposium on Information Visualization</i>, 57–65. Los Alamitos CA: IEEE Computer Society.
