@@ -13,7 +13,9 @@ categories: [visualization, d3js, dialectology]
 ![]({{ site.baseurl }}/images/hessen-dialekterkenner.png)
 
 Beantworten Sie 7 Fragen zu syntaktischen Dialektvarianten und ermitteln Sie, 
-in welchem Gebiet in Hessen Ihr Dialekt gesprochen wird.
+in welchem Gebiet in Hessen Ihr Dialekt gesprochen wird. Die interaktive 
+Visualisierung finden Sie <a href="http://th-mayer.de/syhd/" target="_blank">
+hier</a>.
 
 # Information
                                              
