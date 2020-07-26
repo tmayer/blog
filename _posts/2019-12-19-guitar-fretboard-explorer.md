@@ -1,6 +1,6 @@
 ---
 title: "Guitar Fretboard Explorer"
-description: "Aus welcher Region in Hessen kommen Sie?"
+description: "An interactive fretboard visualization"
 toc: false
 comments: true
 layout: post
