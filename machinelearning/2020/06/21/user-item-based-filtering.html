@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>User and Item Based Filtering | Thomas MAYER</title>
+<title>User and Item Based Filtering | Thomas Mayer</title>
 <meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="User and Item Based Filtering" />
 <meta property="og:locale" content="en_US" />
@@ -11,20 +11,20 @@
 <meta property="og:description" content="Two different ways to do collaborative filtering" />
 <link rel="canonical" href="https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html" />
 <meta property="og:url" content="https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html" />
-<meta property="og:site_name" content="Thomas MAYER" />
+<meta property="og:site_name" content="Thomas Mayer" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-06-21T00:00:00-05:00" />
 <script type="application/ld+json">
 {"mainEntityOfPage":{"@type":"WebPage","@id":"https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html"},"description":"Two different ways to do collaborative filtering","@type":"BlogPosting","url":"https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html","headline":"User and Item Based Filtering","dateModified":"2020-06-21T00:00:00-05:00","datePublished":"2020-06-21T00:00:00-05:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://tmayer.github.io/blog/feed.xml" title="Thomas MAYER" /><!-- the google_analytics_id gets auto inserted from the config file -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://tmayer.github.io/blog/feed.xml" title="Thomas Mayer" /><!-- the google_analytics_id gets auto inserted from the config file -->
 
 
 
 <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-165309645-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
 
 <link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>User and Item Based Filtering | Thomas MAYER</title>
+<title>User and Item Based Filtering | Thomas Mayer</title>
 <meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="User and Item Based Filtering" />
 <meta property="og:locale" content="en_US" />
@@ -32,7 +32,7 @@
 <meta property="og:description" content="Two different ways to do collaborative filtering" />
 <link rel="canonical" href="https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html" />
 <meta property="og:url" content="https://tmayer.github.io/blog/machinelearning/2020/06/21/user-item-based-filtering.html" />
-<meta property="og:site_name" content="Thomas MAYER" />
+<meta property="og:site_name" content="Thomas Mayer" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-06-21T00:00:00-05:00" />
 <script type="application/ld+json">
@@ -40,7 +40,7 @@
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
-<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://tmayer.github.io/blog/feed.xml" title="Thomas MAYER" /><!-- the google_analytics_id gets auto inserted from the config file -->
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://tmayer.github.io/blog/feed.xml" title="Thomas Mayer" /><!-- the google_analytics_id gets auto inserted from the config file -->
 
 
 
@@ -112,7 +112,7 @@ window.onload = wrap_img;
 </script>
 </head><body><header class="site-header">
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Thomas MAYER</a><nav class="site-nav">
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Thomas Mayer</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
         <label for="nav-trigger">
           <span class="menu-icon">
@@ -136,7 +136,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      14 min read
+      15 min read
     
 </span></p>
 
@@ -170,19 +170,15 @@ window.onload = wrap_img;
 
   <div class="post-content e-content" itemprop="articleBody">
     <ul class="section-nav">
-<li class="toc-entry toc-h1"><a href="#table-of-contents">Table of Contents</a>
-<ul>
 <li class="toc-entry toc-h2"><a href="#Data">Data </a></li>
-</ul>
-</li>
 <li class="toc-entry toc-h1"><a href="#User-based-Filtering">User-based Filtering </a>
 <ul>
 <li class="toc-entry toc-h2"><a href="#Step-1:-Identify-similar-users">Step 1: Identify similar users </a></li>
 <li class="toc-entry toc-h2"><a href="#Ranking-the-critics">Ranking the critics </a></li>
 <li class="toc-entry toc-h2"><a href="#Step-2:-Recommending-Items">Step 2: Recommending Items </a></li>
-<li class="toc-entry toc-h2"><a href="#Item-based-Filtering">Item-based Filtering </a></li>
 </ul>
 </li>
+<li class="toc-entry toc-h1"><a href="#Item-based-Filtering">Item-based Filtering </a></li>
 <li class="toc-entry toc-h1"><a href="#User-or-Item-based-Filtering?">User or Item-based Filtering? </a></li>
 </ul><!--
 #################################################
@@ -200,30 +196,6 @@ window.onload = wrap_img;
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered">
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p></p>
-<h1>
-<a class="anchor" href="#table-of-contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Table of Contents<span class="tocSkip"></span>
-</h1>
-<div class="toc" style="margin-top: 1em;"><ul class="toc-item">
-<li>
-<span><a href="#User-and-Item-Based-Filtering" data-toc-modified-id="User-and-Item-Based-Filtering-1"><span class="toc-item-num">1  </span>User and Item Based Filtering</a></span><ul class="toc-item"><li><span><a href="#Data" data-toc-modified-id="Data-1.1"><span class="toc-item-num">1.1  </span>Data</a></span></li></ul>
-</li>
-<li>
-<span><a href="#User-based-Filtering" data-toc-modified-id="User-based-Filtering-2"><span class="toc-item-num">2  </span>User-based Filtering</a></span><ul class="toc-item">
-<li><span><a href="#Step-1:-Identify-similar-users" data-toc-modified-id="Step-1:-Identify-similar-users-2.1"><span class="toc-item-num">2.1  </span>Step 1: Identify similar users</a></span></li>
-<li><span><a href="#Ranking-the-critics" data-toc-modified-id="Ranking-the-critics-2.2"><span class="toc-item-num">2.2  </span>Ranking the critics</a></span></li>
-<li><span><a href="#Step-2:-Recommending-Items" data-toc-modified-id="Step-2:-Recommending-Items-2.3"><span class="toc-item-num">2.3  </span>Step 2: Recommending Items</a></span></li>
-<li><span><a href="#Item-based-Filtering" data-toc-modified-id="Item-based-Filtering-2.4"><span class="toc-item-num">2.4  </span>Item-based Filtering</a></span></li>
-</ul>
-</li>
-<li><span><a href="#User-or-Item-based-Filtering?" data-toc-modified-id="User-or-Item-based-Filtering?-3"><span class="toc-item-num">3  </span>User or Item-based Filtering?</a></span></li>
-</ul></div>
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -441,9 +413,13 @@ window.onload = wrap_img;
 <h2 id="Step-1:-Identify-similar-users">
 <a class="anchor" href="#Step-1:-Identify-similar-users" aria-hidden="true"><span class="octicon octicon-link"></span></a>Step 1: Identify similar users<a class="anchor-link" href="#Step-1:-Identify-similar-users"> </a>
 </h2>
-<p>There are multiple ways to define the similarity among users based on the ratings they gave to the movies. However, there is one particular method that a) is easy to compute with Pandas data frames and b) works particularly well when the ratings are not normalized: the <strong>Pearson correlation</strong> coefficient.</p>
-<p>Pearson correlation has values between -1 and +1, where a negative value indicates that the ratings from two users tend to correlate negatively whereas a positive value implies positive correlation. Negative correlation means that a very high rating from the first user would imply a rather low rating from the other while a positive correlation means that both users's ratings are similar in their magnitude.</p>
-<p>In Pandas, there is a very convenient way to get the Pearson correlation coefficients for a data frame by using the <code>corr()</code> method. You just have to decide for which items in our data frame the correlation should be computed, for the users or the movies. In our case, we're interested in the users, that's why we have to transpose the data frame first (by using the <code>.T</code> shortcut, i.e., <code>critics.T</code>) before applying the correlation method.</p>
+<p>There are multiple ways to define the similarity among users based on the ratings they gave to the movies. However, there is one particular method that is easy to understand and visualize: the <strong>Euclidean Distance</strong> score.</p>
+<p>For the sake of simplicity, let's reduce the number of movies in our dataset to two:</p>
+<ol>
+<li>Snakes on a Plane</li>
+<li>You, Me and Dupree</li>
+</ol>
+<p>The ratings for the two movies constitute the features on which the users can be compared. A two-dimenstional visualization would look like this:</p>
 
 </div>
 </div>
@@ -455,7 +431,23 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">critics</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'pearson'</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Euclidean distance example</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">xkcd</span><span class="p">():</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+    <span class="n">xaxis</span> <span class="o">=</span> <span class="s1">'You, Me and Dupree'</span>
+    <span class="n">yaxis</span> <span class="o">=</span> <span class="s1">'Snakes on a Plane'</span>
+    <span class="n">critics</span><span class="p">[[</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">'scatter'</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">yaxis</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+
+    <span class="c1"># annotate the labels</span>
+
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">critics</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+      <span class="n">xval</span><span class="p">,</span> <span class="n">yval</span> <span class="o">=</span> <span class="n">critics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">label</span><span class="p">,</span> <span class="p">[</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">]]</span>
+      <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="s1">'Lisa Rose'</span><span class="p">:</span> <span class="c1"># make sure that labels don't overlap</span>
+            <span class="n">yval</span> <span class="o">-=</span> <span class="mf">0.1</span>
+      <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="p">(</span><span class="n">xval</span><span class="p">,</span> <span class="n">yval</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -468,108 +460,9 @@ window.onload = wrap_img;
 <div class="output_area">
 
 
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Lisa Rose</th>
-      <th>Gene Seymour</th>
-      <th>Michael Phillips</th>
-      <th>Claudia Puig</th>
-      <th>Mick LaSalle</th>
-      <th>Jack Matthews</th>
-      <th>Toby</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Lisa Rose</th>
-      <td>1.000000</td>
-      <td>0.396059</td>
-      <td>0.404520</td>
-      <td>0.566947</td>
-      <td>0.594089</td>
-      <td>0.747018</td>
-      <td>0.991241</td>
-    </tr>
-    <tr>
-      <th>Gene Seymour</th>
-      <td>0.396059</td>
-      <td>1.000000</td>
-      <td>0.204598</td>
-      <td>0.314970</td>
-      <td>0.411765</td>
-      <td>0.963796</td>
-      <td>0.381246</td>
-    </tr>
-    <tr>
-      <th>Michael Phillips</th>
-      <td>0.404520</td>
-      <td>0.204598</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>-0.258199</td>
-      <td>0.134840</td>
-      <td>-1.000000</td>
-    </tr>
-    <tr>
-      <th>Claudia Puig</th>
-      <td>0.566947</td>
-      <td>0.314970</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>0.566947</td>
-      <td>0.028571</td>
-      <td>0.893405</td>
-    </tr>
-    <tr>
-      <th>Mick LaSalle</th>
-      <td>0.594089</td>
-      <td>0.411765</td>
-      <td>-0.258199</td>
-      <td>0.566947</td>
-      <td>1.000000</td>
-      <td>0.211289</td>
-      <td>0.924473</td>
-    </tr>
-    <tr>
-      <th>Jack Matthews</th>
-      <td>0.747018</td>
-      <td>0.963796</td>
-      <td>0.134840</td>
-      <td>0.028571</td>
-      <td>0.211289</td>
-      <td>1.000000</td>
-      <td>0.662849</td>
-    </tr>
-    <tr>
-      <th>Toby</th>
-      <td>0.991241</td>
-      <td>0.381246</td>
-      <td>-1.000000</td>
-      <td>0.893405</td>
-      <td>0.924473</td>
-      <td>0.662849</td>
-      <td>1.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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QKxYsUIIIURkZKR46623hBBC/P777wKA2LJlixBCiB07dgidTieaN28uRo0aJXr16iX0er0YPHjwZf2bXA1yc3NFbGysuP7668WSJUtE165dRVZWVqXXFBcXi5iYGHHrrbeKWbNmic6dOwsAol27dkIIIRYvXizUarXo06ePmDx5smjYsKG0jn7zzTeFwWCQpmWxWETdunXFwIEDL6jF5/MJnU4npkyZIj132223CQBi586d0nP9+/cXqampwufziYkTJwq9Xi8mTZokxo0bJ6KjowUA8f3330uvHzVqlLjllluq/P5hYWHi3XfflR47HA6hUqnEypUrped+/vlnAUDs3r1bCFFxbIDRaBT9+/cXw4cPF02aNBHR0dHi119/FUJUHCugVqvFmTNnhM/nE6mpqUKj0Yjly5cLIYRYsmSJ0Gq1okePHmLQoEEiIyNDGI3Gq+IYlUB6X7WPITh69CiGDh0KjUYDlUqFRYsWYdGiRdLv58+fX+nozaosX74cy5cvx/r16/8ytfiHO/48bORPu/6hSr+qLqcZHR0tpST//lOif7ratWujR48eyMzMBAAkJSVh7ty5aNq0qXQcgFarxZAhQ6TT7wYNGoS2bdtK05g2bRrS09OxbNkyHD9+HKNHj8aYMWMAAPfeey/q1KkjvTYtLQ2LFy+ucsvsmmuuQb169fDCCy8gISEB1113HQYOHIg77rgD3bp1g1arxRdffIGlS5fi119/xdNPPw273Y6TJ09CrVZj9erVWLZsGdauXYvdu3cjLS0Nr732Gvr27Stt2Y0ZMwZxcXH47LPPEB4ejnfffRd79+5FUVERAGDixInS/tyUlBSMHj1augjPrbfeisOHD+Odd97BsWPHkJKSgk8//VT2ue//BMnJydi6dStGjx6NgQMHIiIiAmvXrq30mri4OOzYsQOvv/46duzYgdtuuw0zZszA888/D5/Ph0GDBiEtLQ2LFi3C9u3b0adPH2m9ftddd0mjD0DFluf777+PX3/9tcp67rzzTvTq1Ut6/NRTT2HLli2Vjv8aNGgQ9u7dC6/Xi+eeew7169fH119/DZPJhNWrV2PlypWVRoObNWuGhg0bVvl5Xbt2lZYDoOLfwEsvvVTpLLjMzEzcc8890jEvK1euxMcff4zNmzfDbDbjgQcewP333y9dv+Oxxx7DkSNHkJqaCgB4+umn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%0A">
 </div>
 
 </div>
@@ -583,9 +476,18 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>As can be seen in the correlation matrix, some users are more similar to each other than others. For example, users Toby and Michael Phillips show completely opposite behavior, indicated by a Pearson coefficient of -1. This is because they only share ratings for two movies ('Snakes on a Plane' and 'Superman Returns') and those ratings are completely negatively correlated. Compared to their respective average values (3.25 for Michael Phillips and 4.25 for Toby), they gave opposite directions for these two movies. While Phillips gave a lower rating for 'Snakes' (3.0), Toby gave a higher value (4.5) and vice versa for 'Superman Returns' (4.0 in Toby's case and 3.5 in Phillips').</p>
-<p>On the other hand, Toby and Lisa Rose's ratings are very similar to each other, showing a Pearson value of 0.99.</p>
-<p>Users always have a Pearson correlation coefficient of 1 to themselves because, obviously, their ratings show a perfect correlation. The matrix is also symmetrical as the correlation is not dependent on order.</p>
+<p>As you can see, Claudia Puig and Lisa Rose are pretty close to each other (actually, they overlap as they have exactly the same values for both features) while Toby and Gene Seymour are most dissimilar. Although the two-dimensional plot nicely shows the differences between users for these two movies, there are two problems:</p>
+<ol>
+<li>there are more than two movies, hence we need a higher dimensional plot (which would be hard to visualize)</li>
+<li>it is hard to compare all the users to each other; it would be preferable to have a single (similarity or distance) score.</li>
+</ol>
+<p>To this end, we compute the Euclidean distance score. It is best explained in the two-dimensional case above, however, it can easily be extended to higher dimensional cases. As we all learned in high-school geometry, you can compute the distance of two points in a two-dimensional space if you compute the following steps:</p>
+<ol>
+<li>compute the distance between the points on each axis and square it</li>
+<li>take the sum of the distances from all axes</li>
+<li>take the square root of the total sum</li>
+</ol>
+<p>Since this defines a distance function, yet we need a similarity score we just use the Euclidean score, add 1 to it (so not to run into any division-by-zero error) and invert it. The final function looks as follows. Note that we didn't take the square root (to get the same results as in Segaran's book). The square root doesn't change anything in the order of the similarities/distances and thus can be ignored for our purposes.</p>
 
 </div>
 </div>
@@ -611,6 +513,16 @@ window.onload = wrap_img;
 </div>
     
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In Pandas, there is a very convenient way to get the pairwise results for a function like the <code>euclidean()</code> above for a data frame by using the <code>corr()</code> method and specify your own method (in this case just giving the function name <code>euclidean</code> as the parameter <code>method</code>). You just have to decide for which items in our data frame the correlation 
+should be computed, for the users or the movies. In our case, we're interested in the users, that's why 
+we have to transpose the data frame first (by using the <code>.T</code> shortcut, i.e., <code>critics.T</code>) before applying the correlation method.</p>
+
+</div>
+</div>
+</div>
     
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -746,10 +658,8 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Ranking-the-critics">
-<a class="anchor" href="#Ranking-the-critics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ranking the critics<a class="anchor-link" href="#Ranking-the-critics"> </a>
-</h2>
-<p>With the Pearson correlation matrix we can compute a ranking of critics for each user. To this end, we define the function <code>top_matches</code> that makes use of the <code>corr()</code> method of data frames for the similary scores. To get a proper similarity ranking, we first identify all users other than the one under investigation and return a Pandas Series that is created by indexing the correlation matrix for the respective user. Finally, the series is sorted in reverse order to return the top similar users.</p>
+<p>As can be seen in the resulting matrix, some users are more similar to each other than others. For example, users Gene Seymour and Jack Matthews are pretty close to each other (0.8). In fact, except for "Snakes on a Plane" they gave the exact same ratings to all movies that they both watched.</p>
+<p>On the other hand, users Gene Seymour and Toby are most dissimilar (with a distance score of 0.108). This is due to the fact that they have only three movies that they both gave ratings to and those three movies have comparatively big differences.</p>
 
 </div>
 </div>
@@ -761,7 +671,106 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">top_matches</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="n">person</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'pearson'</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">critics</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">'Jack Matthews'</span><span class="p">,</span> <span class="s1">'Gene Seymour'</span><span class="p">,</span> <span class="s1">'Toby'</span><span class="p">]]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Lady in the Water</th>
+      <th>Snakes on a Plane</th>
+      <th>Just My Luck</th>
+      <th>Superman Returns</th>
+      <th>You, Me and Dupree</th>
+      <th>The Night Listener</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Jack Matthews</th>
+      <td>3.0</td>
+      <td>4.0</td>
+      <td>NaN</td>
+      <td>5.0</td>
+      <td>3.5</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>Gene Seymour</th>
+      <td>3.0</td>
+      <td>3.5</td>
+      <td>1.5</td>
+      <td>5.0</td>
+      <td>3.5</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>Toby</th>
+      <td>NaN</td>
+      <td>4.5</td>
+      <td>NaN</td>
+      <td>4.0</td>
+      <td>1.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Ranking-the-critics">
+<a class="anchor" href="#Ranking-the-critics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ranking the critics<a class="anchor-link" href="#Ranking-the-critics"> </a>
+</h2>
+<p>With the Euclidean similarity matrix we can compute a ranking of critics for each user. To this end, we define the function <code>top_matches</code> that makes use of the <code>corr()</code> method of data frames for the similary scores. To get a proper similarity ranking, we first identify all users other than the one under investigation and return a Pandas Series that is created by indexing the similarity matrix for the respective user. Finally, the series is sorted in reverse order to return the top similar users.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">top_matches</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="n">person</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">euclidean</span><span class="p">):</span>
   <span class="n">other_people</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">critics</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">person</span><span class="p">]</span>
   <span class="n">corr_persons</span> <span class="o">=</span> <span class="n">critics</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
   <span class="n">scores</span> <span class="o">=</span> <span class="n">corr_persons</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">other_people</span><span class="p">,</span> <span class="n">person</span><span class="p">]</span>
@@ -779,7 +788,7 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>As mentioned above, the most similar user to Toby is Lisa Rose, showing a correlation value of almost 1, whereas the least similar is Michael Phillips.</p>
+<p>The most similar user to Toby is Mick LaSalle, showing a similarity value of 0.307, whereas the least similar is Gene Seymour (as discussed above).</p>
 
 </div>
 </div>
@@ -806,12 +815,12 @@ window.onload = wrap_img;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Lisa Rose           0.991241
-Mick LaSalle        0.924473
-Claudia Puig        0.893405
-Jack Matthews       0.662849
-Gene Seymour        0.381246
-Michael Phillips   -1.000000
+<pre>Mick LaSalle        0.307692
+Michael Phillips    0.285714
+Claudia Puig        0.235294
+Lisa Rose           0.222222
+Jack Matthews       0.117647
+Gene Seymour        0.108108
 Name: Toby, dtype: float64</pre>
 </div>
 
@@ -831,8 +840,22 @@ Name: Toby, dtype: float64</pre>
 </h2>
 <p>Having defined the similarity of users, we can move to the second step: how to compute the actual recommendations for user Toby. For this, we first select those movies in our toy dataset that Toby hasn't ranked yet (assuming he hasn't watched them either). These missing movies are the basis for our recommendations. All we need to do now is rank them in the appropriate order so that the movie that we assume he would rate highest comes up first in our ranking.</p>
 <p>This begs the question how we make the predictions. The basic idea is pretty simple: we take the ratings from other users for the missing movies and compute the weighted average of the rankings for each movie. But where do we take the weights from? It's very easy. We take advantage of the similarities that we worked out above. Thus, the final score for each movie (for user Toby) is calculated by taking the sum of the rating times the similarity (to Toby) for each movie divided by the overall sum of the similarities.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>$ score_{movie} = \frac{\sum_{i=1}^{users} sim_{user_i, Toby} * rating_{user_i, movie}}{\sum_{i=1}^{users} sim_{user_i, Toby}}$</p>
-<p>In Pandas, we can use the <code>isnull()</code> method on the Series to identify all the missing movies for the user. Given the similarity rankings from our previously defined function <code>top_matches</code>, we remove those users whose correlation coefficient is negative. The rationale is that we only want to stick to users that rate positively correlated with Toby. We then index into the ratings data frame, extracting only those cells with similar users and missing films. For the actual computation of the scores we need two objects:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In Pandas, we can use the <code>isnull()</code> method on the Series to identify all the missing movies for the user. We then index into the ratings data frame, extracting only those cells with similar users and missing films. For the actual computation of the scores we need two objects:</p>
 <ol>
 <li>the subset of the cells from the original data frame of ratings giving the similar users and the missing movies (<code>cores</code>)</li>
 <li>the filtered user similarities where all negatively correlated users to Toby have been discarded (<code>sims</code>)</li>
@@ -910,22 +933,28 @@ Name: Toby, dtype: float64</pre>
   </thead>
   <tbody>
     <tr>
-      <th>Lisa Rose</th>
-      <td>2.5</td>
-      <td>3.0</td>
-      <td>3.0</td>
-    </tr>
-    <tr>
       <th>Mick LaSalle</th>
       <td>3.0</td>
       <td>2.0</td>
       <td>3.0</td>
     </tr>
     <tr>
+      <th>Michael Phillips</th>
+      <td>2.5</td>
+      <td>NaN</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
       <th>Claudia Puig</th>
       <td>NaN</td>
       <td>3.0</td>
       <td>4.5</td>
+    </tr>
+    <tr>
+      <th>Lisa Rose</th>
+      <td>2.5</td>
+      <td>3.0</td>
+      <td>3.0</td>
     </tr>
     <tr>
       <th>Jack Matthews</th>
@@ -974,11 +1003,12 @@ Name: Toby, dtype: float64</pre>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Lisa Rose        0.991241
-Mick LaSalle     0.924473
-Claudia Puig     0.893405
-Jack Matthews    0.662849
-Gene Seymour     0.381246
+<pre>Mick LaSalle        0.307692
+Michael Phillips    0.285714
+Claudia Puig        0.235294
+Lisa Rose           0.222222
+Jack Matthews       0.117647
+Gene Seymour        0.108108
 Name: Toby, dtype: float64</pre>
 </div>
 
@@ -1038,9 +1068,10 @@ Name: Toby, dtype: float64</pre>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Lisa Rose</th>
       <th>Mick LaSalle</th>
+      <th>Michael Phillips</th>
       <th>Claudia Puig</th>
+      <th>Lisa Rose</th>
       <th>Jack Matthews</th>
       <th>Gene Seymour</th>
     </tr>
@@ -1048,27 +1079,30 @@ Name: Toby, dtype: float64</pre>
   <tbody>
     <tr>
       <th>Lady in the Water</th>
-      <td>2.478102</td>
-      <td>2.773420</td>
+      <td>0.923077</td>
+      <td>0.714286</td>
       <td>NaN</td>
-      <td>1.988547</td>
-      <td>1.143739</td>
+      <td>0.555556</td>
+      <td>0.352941</td>
+      <td>0.324324</td>
     </tr>
     <tr>
       <th>Just My Luck</th>
-      <td>2.973722</td>
-      <td>1.848947</td>
-      <td>2.680215</td>
+      <td>0.615385</td>
       <td>NaN</td>
-      <td>0.571870</td>
+      <td>0.705882</td>
+      <td>0.666667</td>
+      <td>NaN</td>
+      <td>0.162162</td>
     </tr>
     <tr>
       <th>The Night Listener</th>
-      <td>2.973722</td>
-      <td>2.773420</td>
-      <td>4.020323</td>
-      <td>1.988547</td>
-      <td>1.143739</td>
+      <td>0.923077</td>
+      <td>1.142857</td>
+      <td>1.058824</td>
+      <td>0.666667</td>
+      <td>0.352941</td>
+      <td>0.324324</td>
     </tr>
   </tbody>
 </table>
@@ -1113,9 +1147,9 @@ Name: Toby, dtype: float64</pre>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Lady in the Water      8.383808
-Just My Luck           8.074754
-The Night Listener    12.899752
+<pre>Lady in the Water     2.870184
+Just My Luck          2.150096
+The Night Listener    4.468690
 dtype: float64</pre>
 </div>
 
@@ -1158,9 +1192,9 @@ dtype: float64</pre>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Lady in the Water     2.959810
-Just My Luck          3.190366
-The Night Listener    3.853215
+<pre>Lady in the Water     1.041384
+Just My Luck          0.873317
+The Night Listener    1.276678
 dtype: float64</pre>
 </div>
 
@@ -1203,9 +1237,9 @@ dtype: float64</pre>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Just My Luck          2.530981
-Lady in the Water     2.832550
-The Night Listener    3.347790
+<pre>Just My Luck          2.461988
+Lady in the Water     2.756124
+The Night Listener    3.500248
 dtype: float64</pre>
 </div>
 
@@ -1220,9 +1254,9 @@ dtype: float64</pre>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Item-based-Filtering">
+<h1 id="Item-based-Filtering">
 <a class="anchor" href="#Item-based-Filtering" aria-hidden="true"><span class="octicon octicon-link"></span></a>Item-based Filtering<a class="anchor-link" href="#Item-based-Filtering"> </a>
-</h2>
+</h1>
 <p>So far, we've looked at the user similarities first to reduce the search space for our recommendations. However, this comes with a downside when your matrix of ratings includes a large number of users and shows a lot of sparsity, thus making it hard to compute similarities among users when there is little to no overlap.</p>
 <p>An alternative approach, called item-based filtering, tries to remedy these problems by dispensing with the user similarity step and searching for similar items right away (hence the name). With our toy dataframe this is very easy as we only need to apply the <code>corr()</code> method again, this time on the items and not on the users:</p>
 
@@ -1612,7 +1646,7 @@ dtype: float64</pre>
         </p>
       </div>
       <div class="footer-col">
-        <p>Blogging about NLP, Data Science, Visualization and more.</p>
+        <p>NLP, ML, linguistics, visualizations, guitar and more.</p>
       </div>
     </div>
 
